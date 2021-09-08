@@ -3,10 +3,10 @@
 #include <cmath>
 using namespace std;
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
 	// 구구단 5단
-	ofstream fout("NineByNine.txt");
+	ofstream fout("Gugudan.txt");
 	if (!fout)
 	{
 		cout << "Cannot open Gugudan file!" << endl;
@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 	fout.close();
 
 	// 2의 n승
-	fout.open("Pow.txt");
+	fout.open("Power.txt");
 	if (!fout)
 	{
 		cout << "Cannot open Power txt file!" << endl;
@@ -31,20 +31,7 @@ int main(int argc, char** argv)
 	{
 		for (int n = 0; n < 11; n++)
 		{
-			fout << n << "\t" << pow(2., (double)n) << endl;
-		}
-	}
-	fout.close();
-	fout.open("Pow.csv");
-	if (!fout)
-	{
-		cout << "Cannot open csv file!" << endl;
-	}
-	else
-	{
-		for (int n = 0; n < 11; n++)
-		{
-			fout << n << "," << pow(2., (double)n) << endl;
+			fout << n << ", " << pow(2., (double)n) << endl;
 		}
 	}
 	fout.close();
@@ -63,10 +50,10 @@ int main(int argc, char** argv)
 		double PI = 3.14159265358979;
 		for (double t=0; t<.01; t+=dt)
 		{
-			fout << t << ","
-				<< A * sin(2. * PI * f1 * t) << ','
-				<< A * sin(2. * PI * f2 * t) << ','
-				<< A * sin(2. * PI * f3 * t) << ','
+			fout << t << ", "
+				<< A * sin(2. * PI * f1 * t) << ', '
+				<< A * sin(2. * PI * f2 * t) << ', '
+				<< A * sin(2. * PI * f3 * t) << ', '
 				<< A * sin(2. * PI * f4 * t) << endl;
 		}
 	}

@@ -17,7 +17,7 @@ class waveHeader {
 		int subChunk2ID, subChunk2size;
 };
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
 	waveHeader wav;
 	chr4toint chnk;
