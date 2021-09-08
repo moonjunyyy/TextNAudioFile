@@ -61,7 +61,6 @@ class waveHeader {
 int main(int argc, char* argv[])
 {
 	waveHeader wav;
-	chr4toint chnk;
 
 	//Sprint 1
 
@@ -87,6 +86,13 @@ int main(int argc, char* argv[])
 
 	wav.WriteWaveHeader(A, fs, len, bytr, channels);
 
+	waveHeader wav2;
+
+	ifstream beatles("Beatles.wav", ios::binary | ios::out);
+	beatles.read((char*)&wav2, sizeof(waveHeader));
+
+	cout << wav2.numChannels << endl;
+
 	//Sprint 4
 
 	mywave.open("mywave.wav", ios::binary | ios::out);
@@ -109,13 +115,12 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < fs * len; i++)
 	{
 		double t = (double)i / (double)fs;
-		dat[i] += sin(2 * PI * (65.4075 * t + ((261.630 - 65.4075) / 8. * t * t))) * 1000. / (1. + t / 8.);
-		dat[i] += sin(2 * PI * (130.815 * t + ((523.260 - 130.815) / 8. * t * t))) * 1000. / (1. + t / 8.);
-		dat[i] += sin(2 * PI * (261.630 * t + ((1046.52 - 261.630) / 8. * t * t))) * 1000. / (1. + t / 8.);
-		dat[i] += sin(2 * PI * (523.260 * t + ((2093.04 - 523.260) / 8. * t * t))) * 1000. / (1. + t / 8.);
-		dat[i] += sin(2 * PI * (1046.52 * t + ((4186.08 - 1046.52) / 8. * t * t))) * 1000. / (1. + t / 8.);
-		dat[i] += sin(2 * PI * (2093.04 * t + ((8372.16 - 2093.04) / 8. * t * t))) * 1000. / (1. + t / 8.);
-		dat[i] += sin(2 * PI * (4186.08 * t + ((16744.32 - 4186.08) / 8. * t * t))) * 1000. / (1. + t / 8.);
+		dat[i] += sin(2 * PI * (65.4075 * t + ((261.630 - 65.4075) / 10. * t * t))) * 1000. / (1. + t / 8.);
+		dat[i] += sin(2 * PI * (130.815 * t + ((523.260 - 130.815) / 10. * t * t))) * 1000. / (1. + t / 8.);
+		dat[i] += sin(2 * PI * (261.630 * t + ((1046.52 - 261.630) / 10. * t * t))) * 1000. / (1. + t / 8.);
+		dat[i] += sin(2 * PI * (523.260 * t + ((2093.04 - 523.260) / 10. * t * t))) * 1000. / (1. + t / 8.);
+		dat[i] += sin(2 * PI * (1046.52 * t + ((4186.08 - 1046.52) / 10. * t * t))) * 1000. / (1. + t / 8.);
+		dat[i] += sin(2 * PI * (2093.04 * t + ((8372.16 - 2093.04) / 10. * t * t))) * 1000. / (1. + t / 8.);
 	} 
 
 	wav.WriteWaveHeader(A, fs, len, bytr, channels);
