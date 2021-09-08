@@ -15,6 +15,47 @@ class waveHeader {
 		int sampleRate, byteRate;
 		short blockAlign, bitsPerSample;
 		int subChunk2ID, subChunk2size;
+
+		bool WriteWaveHeader(int Amp, int freq, int len, int bytr, int channels)
+		{
+			chr4toint chnk;
+			chnk.char_val[0] = 'R';
+			chnk.char_val[1] = 'I';
+			chnk.char_val[2] = 'F';
+			chnk.char_val[3] = 'F';
+			this->chunkID = chnk.int_val;
+
+			this->chunkSize = bytr * len * channels + 36;
+
+			chnk.char_val[0] = 'W';
+			chnk.char_val[1] = 'A';
+			chnk.char_val[2] = 'V';
+			chnk.char_val[3] = 'E';
+			this->Format = chnk.int_val;
+
+			chnk.char_val[0] = 'f';
+			chnk.char_val[1] = 'm';
+			chnk.char_val[2] = 't';
+			chnk.char_val[3] = ' ';
+			this->subChunkID = chnk.int_val;
+
+			this->subChunk1size = 16;
+			this->audioFormat = 1;
+			this->numChannels = channels;
+			this->sampleRate = freq;
+			this->byteRate = freq * bytr * channels;
+			this->blockAlign = bytr * channels;
+			this->bitsPerSample = bytr * 8;
+
+			chnk.char_val[0] = 'd';
+			chnk.char_val[1] = 'a';
+			chnk.char_val[2] = 't';
+			chnk.char_val[3] = 'a';
+			this->subChunk2ID = chnk.int_val;
+			this->subChunk2size = freq * channels * bytr;
+
+			return true;
+		}
 };
 
 int main(int argc, char* argv[])
@@ -39,45 +80,12 @@ int main(int argc, char* argv[])
 	mywave.write((char*)dat, sizeof(short) * 44100 * 1);
 	mywave.close();
 
-	//Sprint 3...?
+	//Sprint 3
 
 	int f = 440, A = 10000, fs = 44100, len = 1; // in sec
 	int bytr = sizeof(short) , channels = 1;
 
-	chnk.char_val[0] = 'R';
-	chnk.char_val[1] = 'I';
-	chnk.char_val[2] = 'F';
-	chnk.char_val[3] = 'F';
-	wav.chunkID = chnk.int_val;
-
-	wav.chunkSize = bytr * len * channels + 36;
-
-	chnk.char_val[0] = 'W';
-	chnk.char_val[1] = 'A';
-	chnk.char_val[2] = 'V';
-	chnk.char_val[3] = 'E';
-	wav.Format = chnk.int_val;
-
-	chnk.char_val[0] = 'f';
-	chnk.char_val[1] = 'm';
-	chnk.char_val[2] = 't';
-	chnk.char_val[3] = ' ';
-	wav.subChunkID = chnk.int_val;
-
-	wav.subChunk1size = 16;
-	wav.audioFormat = 1;
-	wav.numChannels = channels;
-	wav.sampleRate = fs;
-	wav.byteRate = fs * bytr * channels;
-	wav.blockAlign = bytr * channels;
-	wav.bitsPerSample = bytr * 8;
-
-	chnk.char_val[0] = 'd';
-	chnk.char_val[1] = 'a';
-	chnk.char_val[2] = 't';
-	chnk.char_val[3] = 'a';
-	wav.subChunk2ID = chnk.int_val;
-	wav.subChunk2size = fs * channels * bytr;
+	wav.WriteWaveHeader(A, fs, len, bytr, channels);
 
 	//Sprint 4
 
@@ -110,40 +118,7 @@ int main(int argc, char* argv[])
 		dat[i] += sin(2 * PI * (4186.08 * t + ((16744.32 - 4186.08) / 8. * t * t))) * 1000. / (1. + t / 8.);
 	} 
 
-	chnk.char_val[0] = 'R';
-	chnk.char_val[1] = 'I';
-	chnk.char_val[2] = 'F';
-	chnk.char_val[3] = 'F';
-	wav.chunkID = chnk.int_val;
-
-	wav.chunkSize = bytr * len * channels + 36;
-
-	chnk.char_val[0] = 'W';
-	chnk.char_val[1] = 'A';
-	chnk.char_val[2] = 'V';
-	chnk.char_val[3] = 'E';
-	wav.Format = chnk.int_val;
-
-	chnk.char_val[0] = 'f';
-	chnk.char_val[1] = 'm';
-	chnk.char_val[2] = 't';
-	chnk.char_val[3] = ' ';
-	wav.subChunkID = chnk.int_val;
-
-	wav.subChunk1size = 16;
-	wav.audioFormat = 1;
-	wav.numChannels = channels;
-	wav.sampleRate = fs;
-	wav.byteRate = fs * bytr * channels;
-	wav.blockAlign = bytr * channels;
-	wav.bitsPerSample = bytr * 8;
-
-	chnk.char_val[0] = 'd';
-	chnk.char_val[1] = 'a';
-	chnk.char_val[2] = 't';
-	chnk.char_val[3] = 'a';
-	wav.subChunk2ID = chnk.int_val;
-	wav.subChunk2size = fs * channels * bytr * len;
+	wav.WriteWaveHeader(A, fs, len, bytr, channels);
 
 	mywave.open("myunique.wav", ios::binary | ios::out);
 	mywave.write((char*)&wav, sizeof(waveHeader));
