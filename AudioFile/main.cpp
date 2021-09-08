@@ -52,7 +52,7 @@ class waveHeader {
 			chnk.char_val[2] = 't';
 			chnk.char_val[3] = 'a';
 			this->subChunk2ID = chnk.int_val;
-			this->subChunk2size = freq * channels * bytr;
+			this->subChunk2size = freq * channels * bytr * len;
 
 			return true;
 		}
